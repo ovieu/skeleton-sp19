@@ -1,3 +1,5 @@
+package com.neo.lab7;
+
 import static org.junit.Assert.*;
 import org.junit.Test;
 
