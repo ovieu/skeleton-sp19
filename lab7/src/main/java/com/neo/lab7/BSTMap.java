@@ -4,6 +4,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class BSTMap<K, V> implements Map61B {
+    public BSTMap() {
+
+    }
+
     @Override
     public void clear() {
 
@@ -47,5 +51,27 @@ public class BSTMap<K, V> implements Map61B {
     @Override
     public Iterator iterator() {
         return null;
+    }
+
+    private int size;
+    private BSTNode root;
+
+    private class BSTNode {
+       BSTNode left;
+       BSTNode right;
+       K key;
+       V value;
+
+       public BSTNode(K key, V value) {
+           this.key = key;
+           this.value = value;
+           left = null;
+           right = null;
+       }
+    }
+
+    public static void main(String[] args) {
+        BSTMap<Integer, String> maptest = new BSTMap<>();
+        maptest.put(1, "ivie");
     }
 }
