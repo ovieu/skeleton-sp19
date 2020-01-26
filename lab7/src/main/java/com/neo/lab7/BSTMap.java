@@ -5,7 +5,8 @@ import java.util.Set;
 
 public class BSTMap<K, V> implements Map61B {
     public BSTMap() {
-
+        root = null;
+        size = 0;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class BSTMap<K, V> implements Map61B {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
