@@ -53,6 +53,10 @@ public class BSTMap<K, V> implements Map61B {
         return null;
     }
 
+    private boolean isEmpty() {
+        return size == 0;
+    }
+
     private int size;
     private BSTNode root;
 
