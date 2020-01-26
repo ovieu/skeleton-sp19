@@ -3,7 +3,9 @@ package com.neo.lab7;
 import java.util.Iterator;
 import java.util.Set;
 
-public class BSTMap<K, V> implements Map61B {
+import static junit.framework.TestCase.assertEquals;
+
+public class BSTMap<K extends Comparable<K>, V> implements Map61B {
     public BSTMap() {
         root = null;
         size = 0;
@@ -14,9 +16,21 @@ public class BSTMap<K, V> implements Map61B {
 
     }
 
+    private boolean containsKeyRec(K mkey, BSTNode mRoot) {
+        if (mRoot == null) return false;
+        int cmp = mkey.compareTo(mRoot.key);
+        if (cmp < 0) {
+            return containsKeyRec(mkey, mRoot.left);
+        } else if (cmp > 0) {
+            return containsKeyRec(mkey, mRoot.left);
+        } else {
+            return true;
+        }
+    }
+
     @Override
     public boolean containsKey(Object key) {
-        return false;
+        return containsKeyRec((K) key, root);
     }
 
     @Override
@@ -29,9 +43,25 @@ public class BSTMap<K, V> implements Map61B {
         return size;
     }
 
+    private void putRec(K key, V value,
+                        BSTNode mRoot) {
+        if (mRoot == null) {
+            root = new BSTNode(key, value);
+            size++;
+        } else {
+            int comp = key.compareTo(mRoot.key);
+            if (comp < 0) {
+                putRec(key, value, mRoot.left);
+            } else if (comp > 0) {
+                putRec(key, value, mRoot.right);
+            }
+            mRoot.value = (V) value;
+        }
+    }
+
     @Override
     public void put(Object key, Object value) {
-
+        putRec((K) key, (V) value, root);
     }
 
     @Override
@@ -78,5 +108,8 @@ public class BSTMap<K, V> implements Map61B {
     public static void main(String[] args) {
         BSTMap<Integer, String> maptest = new BSTMap<>();
         maptest.put(1, "ivie");
+        maptest.put(2, "ivie");
+        maptest.put(3, "ivie");
+        System.out.println(maptest.size());
     }
 }
