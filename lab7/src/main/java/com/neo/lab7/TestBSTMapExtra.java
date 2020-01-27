@@ -1,3 +1,5 @@
+package com.neo.lab7;
+
 import java.util.Set;
 import java.util.HashSet;
 import static org.junit.Assert.*;
