@@ -11,9 +11,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
         size = 0;
     }
 
+    private BSTNode recClear(BSTNode mRoot) {
+       if (mRoot == null) return null;
+       mRoot.left = recClear(mRoot.left);
+       mRoot.right = recClear(mRoot.right);
+       mRoot = null;
+       size--;
+       return mRoot;
+    }
+
     @Override
     public void clear() {
-
+        root = recClear(root);
     }
 
     private boolean containsKeyRec(K mkey, BSTNode mRoot) {
@@ -22,7 +31,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
         if (cmp < 0) {
             return containsKeyRec(mkey, mRoot.left);
         } else if (cmp > 0) {
-            return containsKeyRec(mkey, mRoot.left);
+            return containsKeyRec(mkey, mRoot.right);
         } else {
             return true;
         }
@@ -33,9 +42,20 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
         return containsKeyRec((K) key, root);
     }
 
+    private Object getRec(Object key, BSTNode mRoot) {
+       if (mRoot == null) return null;
+       K mkey = (K) key;
+       int comp = mkey.compareTo(mRoot.key);
+       if (comp < 0) {
+           return getRec(key, mRoot.left);
+       } else if (comp > 0) {
+          return getRec(key, mRoot.right);
+       } return mRoot.value;
+    }
+
     @Override
     public Object get(Object key) {
-        return null;
+        return getRec(key, root);
     }
 
     @Override
@@ -43,25 +63,26 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
         return size;
     }
 
-    private void putRec(K key, V value,
-                        BSTNode mRoot) {
+    private BSTNode putRec(K mkey, V mValue, BSTNode mRoot) {
         if (mRoot == null) {
-            root = new BSTNode(key, value);
+            mRoot = new BSTNode(mkey, mValue);
             size++;
         } else {
-            int comp = key.compareTo(mRoot.key);
+            int comp = mkey.compareTo(mRoot.key);
             if (comp < 0) {
-                putRec(key, value, mRoot.left);
+                mRoot.left = putRec(mkey, mValue, mRoot.left);
             } else if (comp > 0) {
-                putRec(key, value, mRoot.right);
+                mRoot.right = putRec(mkey, mValue, mRoot.right);
+            } else {
+                mRoot.value = (V) mValue;
             }
-            mRoot.value = (V) value;
         }
+        return mRoot;
     }
 
     @Override
     public void put(Object key, Object value) {
-        putRec((K) key, (V) value, root);
+       root =  putRec((K) key, (V) value, root);
     }
 
     @Override
@@ -85,7 +106,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
     }
 
     private boolean isEmpty() {
-        return size == 0;
+        return (root == null) ||
+                (size == 0);
     }
 
     private int size;
@@ -100,16 +122,19 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
        public BSTNode(K key, V value) {
            this.key = key;
            this.value = value;
-           left = null;
-           right = null;
+           this.left = null;
+           this.right = null;
        }
     }
 
     public static void main(String[] args) {
-        BSTMap<Integer, String> maptest = new BSTMap<>();
-        maptest.put(1, "ivie");
-        maptest.put(2, "ivie");
-        maptest.put(3, "ivie");
-        System.out.println(maptest.size());
+        BSTMap<Integer, String> map = new BSTMap<>();
+        map.put(1, "ivie");
+        map.put(2, "ivie");
+        map.put(3, "ivie");
+        System.out.println(map.size());
+        System.out.println(map.get(1));
+        map.clear();
+        System.out.println(map.size());
     }
 }
