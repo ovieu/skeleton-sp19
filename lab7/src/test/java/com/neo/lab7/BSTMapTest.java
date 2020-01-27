@@ -23,8 +23,13 @@ public class BSTMapTest {
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1+i);
             //make sure put is working via containsKey and get
+            boolean getWorks = b.get("hi" + i) != null;
+            boolean getValueWorks = (b.get("hi"+i).equals(1+i));
+            boolean containsWorks = b.containsKey("hi" + i);
+
             assertTrue( null != b.get("hi" + i) && (b.get("hi"+i).equals(1+i))
                     && b.containsKey("hi" + i));
+            assertTrue(getWorks && getValueWorks && containsWorks);
         }
         assertEquals(455, b.size());
         b.clear();
