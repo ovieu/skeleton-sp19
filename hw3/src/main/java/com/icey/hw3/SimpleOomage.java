@@ -1,4 +1,4 @@
-package hw3.hash;
+package com.icey.hw3;
 import java.awt.Color;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdDraw;

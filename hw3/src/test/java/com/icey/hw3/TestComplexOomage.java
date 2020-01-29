@@ -1,4 +1,4 @@
-package hw3.hash;
+package com.icey.hw3;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
