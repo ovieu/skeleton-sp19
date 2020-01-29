@@ -2,13 +2,47 @@ package com.neo.lab7;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Stack;
 
-import static junit.framework.TestCase.assertEquals;
-
-public class BSTMap<K extends Comparable<K>, V> implements Map61B {
+public class BSTMap<K extends Comparable<K>, V> implements Map61B, Iterable {
     public BSTMap() {
         root = null;
         size = 0;
+    }
+
+    public class BSTMapIterator implements Iterator<K> {
+        private Stack<BSTNode> stack;
+        BSTNode mRoot;
+
+        public BSTMapIterator() {
+            stack = new Stack<>();
+            mRoot = root;
+            pushLeft(root);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return (!stack.empty());
+        }
+
+        private void pushLeft(BSTNode mRoot) {
+           while (mRoot != null) {
+               stack.push(mRoot);
+               mRoot = mRoot.left;
+           }
+        }
+
+        @Override
+        public K next() {
+            BSTNode curr = stack.pop();
+            pushLeft(curr.right);
+            return curr.key;
+        }
+    }
+
+    @Override
+    public Iterator<K> iterator() {
+        return new BSTMapIterator();
     }
 
     private BSTNode recClear(BSTNode mRoot) {
@@ -100,11 +134,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
         return null;
     }
 
-    @Override
-    public Iterator iterator() {
-        return null;
-    }
-
     private boolean isEmpty() {
         return (root == null) ||
                 (size == 0);
@@ -127,14 +156,33 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B {
        }
     }
 
+    private void printMapRec(BSTNode mRoot) {
+        if (mRoot == null) {
+            System.out.print(" -> ø");
+        } else {
+            printMapRec(mRoot.left);
+            System.out.print("[" + mRoot.key + ":" +
+                    mRoot.value + "]");
+            printMapRec(mRoot.right);
+        }
+    }
+    public void printMap() {
+        printMapRec(root);
+    }
+
     public static void main(String[] args) {
         BSTMap<Integer, String> map = new BSTMap<>();
         map.put(1, "ivie");
         map.put(2, "ivie");
         map.put(3, "ivie");
-        System.out.println(map.size());
-        System.out.println(map.get(1));
-        map.clear();
-        System.out.println(map.size());
+        map.printMap();
+        System.out.println("");
+        System.out.println("");
+        System.out.println("printing with iterator");
+        Iterator<Integer> iter = map.iterator();
+        while (iter.hasNext()) {
+            int val = iter.next();
+            System.out.println(val + " : " + map.get(val) );
+        }
     }
 }
